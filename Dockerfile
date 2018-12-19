@@ -2,9 +2,10 @@ FROM centos/httpd:latest
 MAINTAINER robbin
 
 RUN yum clean all && yum makecache fast && yum -y update \
-    && yum -y install epel-release yum-utils mariadb-server mariadb httpd  
+    && yum -y install epel-release && yum install -y yum-utils mariadb-server mariadb httpd  
 
-RUN rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+RUN rpm -iUvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+RUN rpm -iUvh http://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
 RUN yum update -y && yum-config-manager --enable remi-php72 
 
