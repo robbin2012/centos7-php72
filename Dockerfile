@@ -1,10 +1,14 @@
 FROM centos/httpd:latest
-MAINTAINER dayreiner
+MAINTAINER robbin
 
 RUN yum clean all && yum makecache fast && yum -y update \
-    && yum -y install https://mirror.webtatic.com/yum/el7/webtatic-release.rpm && yum -y update \
-    && yum -y install git composer php56w php56w-cli php-56w-common php56w-opcache php56w-mysql php56w-mbstring php56w-xml php56w-gd php56w-pear php56w-intl \
-    && yum -y install php-drush-drush postfix tcping which && yum clean all
+    && yum -y install epel-release yum-utils mariadb-server mariadb httpd  
+
+RUN rpm -Uvh http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+RUN yum update -y && yum-config-manager --enable remi-php72 
+
+RUN yum install -y php  php-opcache php-mysql php-mbstring  php-bcmath php-pdo php-xml php-mcrypt php-pecl-imagick php-pecl-memcached php-gd php-xmlrpc php-soap php-xmlrpc
 
 RUN echo "Setting up SSH for GitHub Checkouts..." \
     && mkdir -p /root/.ssh && chmod 700 /root/.ssh \
